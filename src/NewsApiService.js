@@ -169,16 +169,7 @@ function NewsApiService() {
   };
 
   this.getNewsById = function (id) {
-    let result = null;
-    newsList.forEach(function (o) {
-      if (o.id == id) {
-        result = o;
-      }
-    });
-    if (!result) {
-      throw new Error("News not found.");
-    }
-    return result;
+    return newsList.find((news) => news.id === parseInt(id));
   };
 
   this.getCommentById = function (id) {

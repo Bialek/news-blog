@@ -50,6 +50,17 @@ app.get("/news/list", cors(), function (request, response) {
   response.status(200).send(res);
 });
 
+app.get("/news/getById/:id", cors(), function (request, response) {
+  response.header("Access-Control-Allow-Origin", "*");
+  const res = newsApiService.getNewsById(request.params.id);
+
+  if (res) {
+    response.status(200).send(res);
+  } else {
+    response.status(404).send("Not Found");
+  }
+});
+
 app.post("/news/add", cors(), function (request, response) {
   console.log(`REQUEST addNews ${JSON.stringify(request.body)};`);
   response.header("Access-Control-Allow-Origin", "*");

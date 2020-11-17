@@ -1,31 +1,35 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import "./styles.scss";
 
-export default function ArticleMiniature(props) {
-  console.log(props);
+export default function ArticleMiniature({ article }) {
+  const history = useHistory();
+
+  function onClickHandler() {
+    history.push(`/article/${article.id}`);
+  }
+
   return (
     <div
       className={`tile is-parent ${
-        props.article.miniatureIsVertical ? "is-vertical" : ""
-      } ${
-        props.article.miniatureSize ? `is-${props.article.miniatureSize}` : ""
-      } `}
+        article.miniatureIsVertical ? "is-vertical" : ""
+      } ${article.miniatureSize ? `is-${article.miniatureSize}` : ""} `}
+      onClick={onClickHandler}
     >
       <article
         className={`tile is-child box ${
-          props.article.miniatureColor
-            ? `notification ${props.article.miniatureColor}`
-            : ""
+          article.miniatureColor ? `notification ${article.miniatureColor}` : ""
         }`}
       >
-        <p className="title">{props.article.title}</p>
-        <p className="subtitle">{props.article.header}</p>
-        {props.article.img && (
+        <p className="title">{article.title}</p>
+        <p className="subtitle">{article.header}</p>
+        {article.img && (
           <figure className="image is-4by3">
-            <img src={props.article.img} alt={props.article.title} />
+            <img src={article.img} alt={article.title} />
           </figure>
         )}
-        {props.article.miniatureContent && (
-          <div className="content">{props.article.miniatureContent}</div>
+        {article.miniatureContent && (
+          <div className="content">{article.miniatureContent}</div>
         )}
       </article>
     </div>

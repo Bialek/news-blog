@@ -15,7 +15,7 @@ export default function Articles() {
         setCollection(response);
       })
       .catch((error) => {
-        setError(error);
+        setError(`Error ${error.status} ${error.statusText}`);
       })
       .finally(() => setIsLoading(false));
   }, []);
