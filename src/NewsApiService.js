@@ -122,7 +122,7 @@ function NewsApiService() {
       header: "With some content",
       content:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus diam, consequat gravida libero rhoncus ut. Morbi maximus, leo sit amet vehicula eleifend, nunc dui porta orci, quis semper odio felis ut quam.",
-      img: "https://via.placeholder.com/200x200",
+      img: "/200x200",
       author: "Jan Kowalski",
       miniatureContent: null,
       miniatureColor: null,
@@ -133,10 +133,28 @@ function NewsApiService() {
 
   let commentsList = [
     {
-      id: lastCId,
-      content: "This is comment example",
+      id: 1,
+      content: "This is comment example 1",
       author: "John Brix",
-      newsId: lastId,
+      newsId: 1,
+    },
+    {
+      id: 2,
+      content: "This is comment example 2",
+      author: "John Brix",
+      newsId: 1,
+    },
+    {
+      id: 3,
+      content: "This is comment example 3",
+      author: "John Brix",
+      newsId: 1,
+    },
+    {
+      id: 4,
+      content: "This is comment example 4",
+      author: "John Brix",
+      newsId: 1,
     },
   ];
 
@@ -159,12 +177,16 @@ function NewsApiService() {
     }
   };
 
-  this.validateComment = function (news) {
-    if (typeof news.content !== "string") {
-      throw new Error("No news content.");
+  this.validateComment = function (comment) {
+    console.log(comment);
+    if (typeof comment.content !== "string") {
+      throw new Error("No comment content.");
     }
-    if (typeof news.author !== "string") {
-      throw new Error("No news author.");
+    if (typeof comment.author !== "string") {
+      throw new Error("No comment author.");
+    }
+    if (typeof comment.newsId !== "number") {
+      throw new Error("No comment news id.");
     }
   };
 
@@ -186,6 +208,7 @@ function NewsApiService() {
   };
 
   this.addNews = function (news) {
+    console.log(news);
     this.validateNews(news);
     let nextId = lastId + 1;
     newsList.push(news);
@@ -215,13 +238,8 @@ function NewsApiService() {
 
   this.getNewsComments = function (id) {
     id = parseInt(id, 10);
-    let result = [];
-    commentsList.forEach(function (o) {
-      if (o.newsId == id) {
-        result.push(o);
-      }
-    });
-    return result;
+
+    return commentsList.filter((comment) => comment.newsId === id);
   };
 
   this.addComment = function (comment) {

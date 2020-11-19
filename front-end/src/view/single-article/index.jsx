@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Loader from "components/loader";
 import NewsService from "services/news/index";
+import CommentsList from "components/comments-list";
 
 export default function SingleArticle() {
   let { articleId } = useParams();
@@ -25,25 +26,27 @@ export default function SingleArticle() {
       {isLoading && <Loader />}
       {error && <div>{error}</div>}
       {data && (
-        <section>
-          <h4 class="title">{data.title}</h4>
-          <h5 class="subtitle">{data.header}</h5>
-          <div class="columns is-multiline is-mobile">
-            <div class="column">{data.content}</div>
-            {data.img && (
-              <div class="column is-one-quarter">
-                <figure class="image is-128x128">
-                  <img src={data.img} alt={data.title} />
-                </figure>
-              </div>
-            )}
-          </div>
-          <footer class="footer">
-            <div class="content">
+        <>
+          <section className="is-large">
+            <h4 className="title">{data.title}</h4>
+            <h5 className="subtitle">{data.header}</h5>
+            <div className="content">
               <p>Author: {data.author}</p>
             </div>
-          </footer>
-        </section>
+            <div className="columns is-multiline is-mobile">
+              <div className="column">{data.content}</div>
+              {data.img && (
+                <div className="column is-one-quarter">
+                  <figure className="image is-128x128">
+                    <img src={data.img} alt={data.title} />
+                  </figure>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <CommentsList articleId={articleId} />
+        </>
       )}
     </div>
   );
