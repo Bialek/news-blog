@@ -4,9 +4,6 @@
  */
 
 function NewsApiService() {
-  let lastId = 0;
-  let lastCId = 0;
-
   const newsList = [
     {
       id: 0,
@@ -117,7 +114,7 @@ function NewsApiService() {
       miniatureSize: null,
     },
     {
-      id: 7,
+      id: 8,
       title: "Main column",
       header: "With some content",
       content:
@@ -172,13 +169,9 @@ function NewsApiService() {
     if (typeof news.content !== "string") {
       throw new Error("No news content.");
     }
-    if (typeof news.author !== "string") {
-      throw new Error("No news author.");
-    }
   };
 
   this.validateComment = function (comment) {
-    console.log(comment);
     if (typeof comment.content !== "string") {
       throw new Error("No comment content.");
     }
@@ -208,13 +201,11 @@ function NewsApiService() {
   };
 
   this.addNews = function (news) {
-    console.log(news);
     this.validateNews(news);
-    let nextId = lastId + 1;
+    news.id = newsList.length;
+    console.log(news);
     newsList.push(news);
-    news.id = nextId;
-    lastId = nextId;
-    return { id: nextId, message: "News created." };
+    return { id: news.id, message: "News created." };
   };
 
   this.modifyNews = function (news) {
@@ -244,15 +235,8 @@ function NewsApiService() {
 
   this.addComment = function (comment) {
     this.validateComment(comment);
-
-    let newsId = parseInt(comment.newsId, 10);
-    let data = this.getNewsById(newsId);
-
-    let nextId = lastCId + 1;
     commentsList.push(comment);
-    comment.id = nextId;
-    comment.newsId = data.id;
-    lastCId = nextId;
+
     return { id: nextId, message: "Comment created." };
   };
 

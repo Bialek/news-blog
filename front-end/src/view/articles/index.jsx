@@ -31,11 +31,10 @@ export default function Articles() {
         return res;
       }, []);
 
+      console.log(grouped);
+
       return grouped.map((grouped) => (
-        <div
-          key={`group-${grouped[0].id}-${grouped[2].id}`}
-          className="tile is-ancestor"
-        >
+        <div key={`group-${grouped[0].id}`} className="tile is-ancestor">
           {grouped.map((article) => (
             <ArticleMiniature
               key={`${article.id}-${article.title}`}

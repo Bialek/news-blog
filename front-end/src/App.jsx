@@ -4,8 +4,10 @@ import Header from "components/header";
 import Home from "view/home";
 import Articles from "view/articles";
 import SingleArticle from "view/single-article";
-
+import AdminDashboard from "view/admin-dashboard";
+import AdminAddArticle from "view/admin-add-article";
 import "./styles.scss";
+import AdminMenuWrapper from "components/admin-menu-wrapper";
 
 export default function App() {
   return (
@@ -27,6 +29,16 @@ export default function App() {
         </Route>
         <Route path={`/article/:articleId`}>
           <SingleArticle />
+        </Route>
+        <Route path={"/admin/dashboard"}>
+          <AdminMenuWrapper>
+            <AdminDashboard />
+          </AdminMenuWrapper>
+        </Route>
+        <Route path={`/admin/add-article`}>
+          <AdminMenuWrapper>
+            <AdminAddArticle />
+          </AdminMenuWrapper>
         </Route>
       </Switch>
     </Router>

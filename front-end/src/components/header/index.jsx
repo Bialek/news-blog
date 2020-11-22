@@ -47,6 +47,14 @@ export default function Header() {
             >
               Articles
             </NavLink>
+
+            <NavLink
+              className="navbar-item"
+              activeClassName="is-active"
+              to="/admin/dashboard"
+            >
+              admin
+            </NavLink>
           </div>
 
           <div className="navbar-end">
