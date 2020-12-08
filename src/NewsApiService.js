@@ -4,7 +4,7 @@
  */
 
 function NewsApiService() {
-  const newsList = [
+  let newsList = [
     {
       id: 0,
       title: "The first news",
@@ -160,13 +160,14 @@ function NewsApiService() {
   };
 
   this.validateNews = function (news) {
-    if (typeof news.title !== "string") {
+    console.log(news);
+    if (typeof news.title !== "string" || news.title === "") {
       throw new Error("No news title.");
     }
-    if (typeof news.header !== "string") {
+    if (typeof news.header !== "string" || news.header === "") {
       throw new Error("No news header.");
     }
-    if (typeof news.content !== "string") {
+    if (typeof news.content !== "string" || news.content === "") {
       throw new Error("No news content.");
     }
   };

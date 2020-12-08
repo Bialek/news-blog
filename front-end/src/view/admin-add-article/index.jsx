@@ -1,9 +1,14 @@
-import React from "react";
+import { UserContext } from "context";
+import React, { useContext, useState } from "react";
 import NewsService from "services/news/index";
 
 export default function AdminAddArticle() {
+  const [message, setMessage] = useState(undefined);
+  const { userData } = useContext(UserContext);
+
   function onSubmitHandler(event) {
     event.preventDefault();
+    setMessage(undefined);
 
     const miniatureSize =
       event.target.miniatureSize.value === ""
@@ -20,9 +25,17 @@ export default function AdminAddArticle() {
       miniatureColor: event.target.miniatureColor.value,
       miniatureIsVertical: event.target.miniatureIsVertical.checked,
       miniatureSize,
+      author: userData.name,
     };
 
-    NewsService.create(payload);
+    NewsService.create(payload)
+      .then(() => {
+        setMessage({ type: "success", text: "New arcticle was added!" });
+        event.target.reset();
+      })
+      .catch(() => {
+        setMessage({ type: "danger", text: `Error!` });
+      });
   }
 
   return (
@@ -155,6 +168,11 @@ export default function AdminAddArticle() {
           </div>
         </div>
       </form>
+      {message && (
+        <article className={`message is-${message.type} mt-6`}>
+          <div className="message-body">{message.text}</div>
+        </article>
+      )}
     </div>
   );
 }

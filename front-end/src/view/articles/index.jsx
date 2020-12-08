@@ -31,8 +31,6 @@ export default function Articles() {
         return res;
       }, []);
 
-      console.log(grouped);
-
       return grouped.map((grouped) => (
         <div key={`group-${grouped[0].id}`} className="tile is-ancestor">
           {grouped.map((article) => (
@@ -53,7 +51,6 @@ export default function Articles() {
       {isLoading && <Loader />}
       {error && <div>{error}</div>}
       {collection && renderedArticles}
-      <div className="tile is-ancestor"></div>
     </div>
   );
 }

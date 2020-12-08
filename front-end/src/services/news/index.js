@@ -40,11 +40,29 @@ class NewsService {
         },
         body: JSON.stringify(payload),
       })
-        .then((response) => {
-          if (response.status !== 200) {
-            resolve(response.text());
+        .then(async (response) => {
+          if (response.status === 200) {
+            resolve();
           } else {
-            resolve(response.text());
+            reject();
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  delete(id) {
+    return new Promise((resolve, reject) => {
+      fetch(`http://localhost:8088/news/remove/${id}`, {
+        method: "delete",
+      })
+        .then(async (response) => {
+          if (response.status !== 200) {
+            reject(response);
+          } else {
+            resolve(await response.json());
           }
         })
         .catch((err) => {

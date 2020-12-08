@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "components/header";
 import Home from "view/home";
@@ -8,43 +8,66 @@ import AdminDashboard from "view/admin-dashboard";
 import AdminAddArticle from "view/admin-add-article";
 import "./styles.scss";
 import AdminMenuWrapper from "components/admin-menu-wrapper";
+import LogIn from "view/log-in";
+import { UserContext } from "context";
+import AdminArticlesList from "view/admin-articles-list";
 
 export default function App() {
-  return (
-    <Router>
-      <Header />
+  const [userData, setUserData] = useState({
+    logged: false,
+    hasAdminPermissions: false,
+  });
 
-      <Switch>
-        <Route path="/" exact={true}>
-          <Home />
-        </Route>
-        <Route path="/sign-in">
-          <Users />
-        </Route>
-        <Route path="/log-in">
-          <Users />
-        </Route>
-        <Route path="/articles" exact={true}>
-          <Articles />
-        </Route>
-        <Route path={`/article/:articleId`}>
-          <SingleArticle />
-        </Route>
-        <Route path={"/admin/dashboard"}>
-          <AdminMenuWrapper>
-            <AdminDashboard />
-          </AdminMenuWrapper>
-        </Route>
-        <Route path={`/admin/add-article`}>
-          <AdminMenuWrapper>
-            <AdminAddArticle />
-          </AdminMenuWrapper>
-        </Route>
-      </Switch>
-    </Router>
+  return (
+    <UserContext.Provider value={{ userData, setUserData }}>
+      <Router>
+        <Header />
+
+        <Switch>
+          <Route path="/" exact={true}>
+            <Home />
+          </Route>
+          {!userData.logged && (
+            <>
+              <Route path="/sign-in">
+                <SignIn />
+              </Route>
+              <Route path="/log-in">
+                <LogIn />
+              </Route>
+            </>
+          )}
+          <Route path="/articles" exact={true}>
+            <Articles />
+          </Route>
+          <Route path={`/article/:articleId`}>
+            <SingleArticle />
+          </Route>
+          {userData.hasAdminPermissions && (
+            <>
+              <Route path={"/admin/dashboard"}>
+                <AdminMenuWrapper>
+                  <AdminDashboard />
+                </AdminMenuWrapper>
+              </Route>
+              <Route path={"/admin/add-article"}>
+                <AdminMenuWrapper>
+                  <AdminAddArticle />
+                </AdminMenuWrapper>
+              </Route>
+              <Route path={"/admin/articles-list"}>
+                <AdminMenuWrapper>
+                  <AdminArticlesList />
+                </AdminMenuWrapper>
+              </Route>
+            </>
+          )}
+        </Switch>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
-function Users() {
-  return <h2>Users</h2>;
+function SignIn() {
+  return <h2>Sign in page, building in progress</h2>;
 }

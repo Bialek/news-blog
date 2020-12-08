@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "logo.png";
+import { UserContext } from "context";
+
 export default function Header() {
   const [isMenuActive, setIsMenuActive] = useState(false);
+  const { userData } = useContext(UserContext);
 
   return (
     <nav
@@ -48,24 +51,39 @@ export default function Header() {
               Articles
             </NavLink>
 
-            <NavLink
-              className="navbar-item"
-              activeClassName="is-active"
-              to="/admin/dashboard"
-            >
-              admin
-            </NavLink>
+            {userData.hasAdminPermissions && (
+              <NavLink
+                className="navbar-item"
+                activeClassName="is-active"
+                to="/admin/dashboard"
+              >
+                admin
+              </NavLink>
+            )}
           </div>
 
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <NavLink className="button is-primary" to="/sign-up">
-                  <strong>Sign up</strong>
-                </NavLink>
-                <NavLink className="button is-light" to="/log-in">
-                  Log in
-                </NavLink>
+                {userData.logged ? (
+                  <>
+                    <div className="media-content mr-3">
+                      <p className="title is-4 has-text-white">{`${userData.name} ${userData.surname}`}</p>
+                    </div>
+                    <NavLink className="button is-primary" to="/sign-up">
+                      <strong>Sing out</strong>
+                    </NavLink>
+                  </>
+                ) : (
+                  <>
+                    <NavLink className="button is-primary" to="/sign-up">
+                      <strong>Sign up</strong>
+                    </NavLink>
+                    <NavLink className="button is-light" to="/log-in">
+                      Log in
+                    </NavLink>
+                  </>
+                )}
               </div>
             </div>
           </div>
