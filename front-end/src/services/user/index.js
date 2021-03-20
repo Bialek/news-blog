@@ -1,7 +1,9 @@
+import { BASE_URL } from "utils/constants";
+
 class UserService {
   logIn(payload) {
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:8088/auth/login", {
+      fetch(`${BASE_URL}/api/auth/signIn`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

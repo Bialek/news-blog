@@ -1,8 +1,3 @@
-/**
- * NEWS API
- * @author Szymon Białas
- */
-
 function NewsApiService() {
   let newsList = [
     {

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import UserService from "services/user";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "context";
+import { STORAGE_TOKEN_KEY } from "utils/constants";
 
 export default function LogIn() {
   const [message, setMessage] = useState(undefined);
@@ -13,12 +14,13 @@ export default function LogIn() {
     setMessage(undefined);
 
     const payload = {
-      login: event.target.login.value,
+      username: event.target.login.value,
       password: event.target.password.value,
     };
 
     UserService.logIn(payload)
       .then((response) => {
+        localStorage.setItem(STORAGE_TOKEN_KEY, response.accessToken);
         setUserData(response);
         history.push("/");
       })

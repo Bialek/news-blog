@@ -2,11 +2,16 @@ import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "logo.png";
 import { UserContext } from "context";
+import { ROLE_ADMIN, STORAGE_TOKEN_KEY } from "utils/constants";
 
 export default function Header() {
   const [isMenuActive, setIsMenuActive] = useState(false);
-  const { userData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
 
+  const signOutHandler = () => {
+    localStorage.removeItem(STORAGE_TOKEN_KEY);
+    setUserData(undefined);
+  };
   return (
     <nav
       className="navbar is-info"
@@ -51,7 +56,7 @@ export default function Header() {
               Articles
             </NavLink>
 
-            {userData.hasAdminPermissions && (
+            {userData && userData.roles.includes(ROLE_ADMIN) && (
               <NavLink
                 className="navbar-item"
                 activeClassName="is-active"
@@ -65,14 +70,16 @@ export default function Header() {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                {userData.logged ? (
+                {userData ? (
                   <>
                     <div className="media-content mr-3">
-                      <p className="title is-4 has-text-white">{`${userData.name} ${userData.surname}`}</p>
+                      <p className="title is-4 has-text-white">{`${userData.username}`}</p>
                     </div>
-                    <NavLink className="button is-primary" to="/sign-up">
-                      <strong>Sing out</strong>
-                    </NavLink>
+                    <div onClick={signOutHandler}>
+                      <NavLink className="button is-primary" to="/">
+                        <strong>Sing out</strong>
+                      </NavLink>
+                    </div>
                   </>
                 ) : (
                   <>

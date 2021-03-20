@@ -9,6 +9,8 @@ export default function AdminArticlesList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log(collection);
+
     if (collection === null) {
       setIsLoading(true);
       NewsService.getAll()

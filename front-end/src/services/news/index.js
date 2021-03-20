@@ -1,7 +1,11 @@
+import { BASE_URL, STORAGE_TOKEN_KEY } from "utils/constants";
+
 class NewsService {
   getAll() {
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:8088/news/list")
+      fetch(`${BASE_URL}/api/news/getAll`, {
+        headers: { "x-access-token": localStorage.getItem(STORAGE_TOKEN_KEY) },
+      })
         .then(async (response) => {
           if (response.status !== 200) {
             reject(response);
@@ -17,7 +21,7 @@ class NewsService {
 
   getById(id) {
     return new Promise((resolve, reject) => {
-      fetch(`http://localhost:8088/news/getById/${id}`)
+      fetch(`${BASE_URL}/news/getById/${id}`)
         .then(async (response) => {
           if (response.status !== 200) {
             reject(response);
@@ -33,7 +37,7 @@ class NewsService {
 
   create(payload) {
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:8088/news/add", {
+      fetch(`${BASE_URL}/news/add`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +59,7 @@ class NewsService {
 
   delete(id) {
     return new Promise((resolve, reject) => {
-      fetch(`http://localhost:8088/news/remove/${id}`, {
+      fetch(`${BASE_URL}/news/remove/${id}`, {
         method: "delete",
       })
         .then(async (response) => {

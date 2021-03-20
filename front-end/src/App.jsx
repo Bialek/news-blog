@@ -11,15 +11,14 @@ import AdminMenuWrapper from "components/admin-menu-wrapper";
 import LogIn from "view/log-in";
 import { UserContext } from "context";
 import AdminArticlesList from "view/admin-articles-list";
+import { ROLE_ADMIN } from "utils/constants";
 
 export default function App() {
-  const [userData, setUserData] = useState({
-    logged: false,
-    hasAdminPermissions: false,
-  });
+  const [userData, setUserData] = useState(undefined);
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
+      {console.log(process.env)}
       <Router>
         <Header />
 
@@ -27,7 +26,7 @@ export default function App() {
           <Route path="/" exact={true}>
             <Home />
           </Route>
-          {!userData.logged && (
+          {!userData && (
             <>
               <Route path="/sign-in">
                 <SignIn />
@@ -43,7 +42,7 @@ export default function App() {
           <Route path={`/article/:articleId`}>
             <SingleArticle />
           </Route>
-          {userData.hasAdminPermissions && (
+          {userData && userData.roles.includes(ROLE_ADMIN) && (
             <>
               <Route path={"/admin/dashboard"}>
                 <AdminMenuWrapper>
