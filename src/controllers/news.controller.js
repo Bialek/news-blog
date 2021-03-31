@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const News = db.news;
-
+const Minature = db.miniature
 const Op = db.Sequelize.Op;
 
 exports.getAll = (req, res) => {
@@ -10,9 +10,15 @@ exports.getAll = (req, res) => {
   });
 };
 
-// exports.create = (req, res) => {
-//   User.create(req.body)
-//     .then((user) => {
+exports.create = (req, res) => {
+  req.body.isPublish = false
+  News.create(req.body)
+    .then((news) => {
+      Minature.create(req.body)
+      .then((miniature) => {
+
+
+      })
 //       if (req.body.roles) {
 //         Role.findAll({
 //           where: {

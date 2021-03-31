@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const News = sequelize.define("news", {
+  const Miniature = sequelize.define("miniature", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -12,19 +12,23 @@ module.exports = (sequelize, Sequelize) => {
     header: {
       type: Sequelize.STRING,
     },
-    content: {
-      type: Sequelize.TEXT,
-    },
-    author: {
-      type: Sequelize.STRING,
-    },
     isPublish: {
       type: Sequelize.BOOLEAN,
+      allowNull: false,
     },
     publishDate: {
       type: Sequelize.DATE,
     },
+    miniatureColor: {
+      type: Sequelize.STRING,
+    },
+    miniatureIsVertical: {
+      type: Sequelize.BOOLEAN,
+    },
+    miniatureSize: {
+      type: Sequelize.INTEGER(10),
+    },
   });
 
-  return News;
+  return Miniature;
 };
