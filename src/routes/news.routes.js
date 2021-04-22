@@ -9,10 +9,36 @@ module.exports = function (app) {
     );
     next();
   });
-
+  app.get("/api/news/getById/:newsId", controller.getById);
+  app.get(
+    "/api/news/getByIdForEdit/:newsId",
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    controller.getByIdForEdit
+  );
   app.get(
     "/api/news/getAll",
     [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
     controller.getAll
   );
+  app.post(
+    "/api/news/create",
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    controller.create
+  );
+  app.put(
+    "/api/news/edit",
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    controller.update
+  );
+  app.delete(
+    "/api/news/delete/:newsId",
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    controller.delete
+  );
+  app.put(
+    "/api/news/publish/:newsId",
+    [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
+    controller.publish
+  );
+  app.get("/api/news/getAllNewest", controller.getAllNewest);
 };

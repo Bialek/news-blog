@@ -1,18 +1,17 @@
 module.exports = (sequelize, Sequelize) => {
   const Miniature = sequelize.define("miniature", {
-    id: {
+    miniatureId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
-    header: {
+    miniatureTitle: {
       type: Sequelize.STRING,
     },
-    isPublish: {
+    miniatureSubtitle: {
+      type: Sequelize.STRING,
+    },
+    published: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
     },
@@ -27,6 +26,9 @@ module.exports = (sequelize, Sequelize) => {
     },
     miniatureSize: {
       type: Sequelize.INTEGER(10),
+    },
+    miniatureContent: {
+      type: Sequelize.TEXT(512),
     },
   });
 

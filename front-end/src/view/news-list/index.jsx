@@ -2,15 +2,15 @@ import React, { useEffect, useState, useMemo } from "react";
 import NewsService from "services/news/index";
 
 import Loader from "components/loader";
-import ArticleMiniature from "components/article-miniature";
+import NewsMiniature from "components/news-miniature";
 
-export default function Articles() {
+export default function NewsList() {
   const [isLoading, setIsLoading] = useState(true);
   const [collection, setCollection] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    NewsService.getAll()
+    NewsService.getAllNewest()
       .then((response) => {
         setCollection(response);
       })
@@ -22,7 +22,7 @@ export default function Articles() {
 
   const renderedArticles = useMemo(() => {
     if (collection) {
-      const grouped = collection.reduce((res, el, i) => {
+      const groupedCollection = collection.reduce((res, el, i) => {
         if (i % 3 === 0) {
           res[res.length] = [el];
         } else {
@@ -31,16 +31,29 @@ export default function Articles() {
         return res;
       }, []);
 
-      return grouped.map((grouped) => (
-        <div key={`group-${grouped[0].id}`} className="tile is-ancestor">
-          {grouped.map((article) => (
-            <ArticleMiniature
-              key={`${article.id}-${article.title}`}
-              article={article}
-            />
-          ))}
-        </div>
-      ));
+      return groupedCollection.map((groupedNews) => {
+        const gridTemplate = groupedNews.reduce(
+          (string, news) => string.concat(` ${news.miniatureSize}fr`),
+          ""
+        );
+
+        return (
+          <div
+            key={`group-${groupedNews[0].newsId}`}
+            style={{
+              gridTemplateColumns: `${gridTemplate}`,
+              display: "grid",
+            }}
+          >
+            {groupedNews.map((news) => (
+              <NewsMiniature
+                key={`${news.newsId}-${news.miniatureTitle}`}
+                news={news}
+              />
+            ))}
+          </div>
+        );
+      });
     } else {
       return <div>Nothing to show</div>;
     }

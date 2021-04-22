@@ -1,32 +1,62 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Header from "components/header";
 import Home from "view/home";
-import Articles from "view/articles";
-import SingleArticle from "view/single-article";
 import AdminDashboard from "view/admin-dashboard";
-import AdminAddArticle from "view/admin-add-article";
 import "./styles.scss";
 import AdminMenuWrapper from "components/admin-menu-wrapper";
 import LogIn from "view/log-in";
 import { UserContext } from "context";
-import AdminArticlesList from "view/admin-articles-list";
 import { ROLE_ADMIN } from "utils/constants";
+import AdminNewsList from "view/admin-news-list";
+import AdminEditNews from "view/admin-edit-news";
+import AdminAddNews from "view/admin-add-news";
+import NewsList from "view/news-list";
+import SingleNews from "view/single-news";
 
 export default function App() {
   const [userData, setUserData] = useState(undefined);
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
-      {console.log(process.env)}
-      <Router>
+      <BrowserRouter>
         <Header />
 
         <Switch>
           <Route path="/" exact={true}>
             <Home />
           </Route>
-          {!userData && (
+          <Route path="/news" exact={true}>
+            <NewsList />
+          </Route>
+          <Route path={`/news/:id`}>
+            <SingleNews />
+          </Route>
+
+          {userData && userData.roles.includes(ROLE_ADMIN) ? (
+            <>
+              <Route path={"/admin/dashboard"}>
+                <AdminMenuWrapper>
+                  <AdminDashboard />
+                </AdminMenuWrapper>
+              </Route>
+              <Route path={"/admin/news-list"}>
+                <AdminMenuWrapper>
+                  <AdminNewsList />
+                </AdminMenuWrapper>
+              </Route>
+              <Route path={"/admin/add-news"}>
+                <AdminMenuWrapper>
+                  <AdminAddNews />
+                </AdminMenuWrapper>
+              </Route>
+              <Route path={"/admin/edit-news/:id"}>
+                <AdminMenuWrapper>
+                  <AdminEditNews />
+                </AdminMenuWrapper>
+              </Route>
+            </>
+          ) : (
             <>
               <Route path="/sign-in">
                 <SignIn />
@@ -36,33 +66,8 @@ export default function App() {
               </Route>
             </>
           )}
-          <Route path="/articles" exact={true}>
-            <Articles />
-          </Route>
-          <Route path={`/article/:articleId`}>
-            <SingleArticle />
-          </Route>
-          {userData && userData.roles.includes(ROLE_ADMIN) && (
-            <>
-              <Route path={"/admin/dashboard"}>
-                <AdminMenuWrapper>
-                  <AdminDashboard />
-                </AdminMenuWrapper>
-              </Route>
-              <Route path={"/admin/add-article"}>
-                <AdminMenuWrapper>
-                  <AdminAddArticle />
-                </AdminMenuWrapper>
-              </Route>
-              <Route path={"/admin/articles-list"}>
-                <AdminMenuWrapper>
-                  <AdminArticlesList />
-                </AdminMenuWrapper>
-              </Route>
-            </>
-          )}
         </Switch>
-      </Router>
+      </BrowserRouter>
     </UserContext.Provider>
   );
 }

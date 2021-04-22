@@ -9,16 +9,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    header: {
+    subtitle: {
       type: Sequelize.STRING,
     },
     content: {
       type: Sequelize.TEXT,
     },
-    author: {
-      type: Sequelize.STRING,
-    },
-    isPublish: {
+    published: {
       type: Sequelize.BOOLEAN,
     },
     publishDate: {

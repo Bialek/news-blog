@@ -51,9 +51,9 @@ export default function Header() {
             <NavLink
               className="navbar-item"
               activeClassName="is-active"
-              to="/articles"
+              to="/news"
             >
-              Articles
+              Newest
             </NavLink>
 
             {userData && userData.roles.includes(ROLE_ADMIN) && (
@@ -62,7 +62,7 @@ export default function Header() {
                 activeClassName="is-active"
                 to="/admin/dashboard"
               >
-                admin
+                Admin
               </NavLink>
             )}
           </div>

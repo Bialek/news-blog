@@ -155,7 +155,6 @@ function NewsApiService() {
   };
 
   this.validateNews = function (news) {
-    console.log(news);
     if (typeof news.title !== "string" || news.title === "") {
       throw new Error("No news title.");
     }
@@ -199,7 +198,6 @@ function NewsApiService() {
   this.addNews = function (news) {
     this.validateNews(news);
     news.id = newsList.length;
-    console.log(news);
     newsList.push(news);
     return { id: news.id, message: "News created." };
   };

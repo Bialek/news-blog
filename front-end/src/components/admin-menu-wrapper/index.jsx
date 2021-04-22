@@ -20,19 +20,10 @@ export default function AdminMenuWrapper(props) {
             <li>
               <NavLink
                 activeClassName="is-active"
-                to="/admin/articles-list"
+                to="/admin/news-list"
                 exact={true}
               >
-                Article list
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                activeClassName="is-active"
-                to="/admin/add-article"
-                exact={true}
-              >
-                Add Article
+                News
               </NavLink>
             </li>
           </ul>

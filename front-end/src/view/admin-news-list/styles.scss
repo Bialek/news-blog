@@ -1,23 +1,27 @@
-.articles-list {
+.news-list {
   display: grid;
   grid-auto-flow: row;
   padding: 1rem;
   &__row {
     display: grid;
-    grid-template-columns: 1fr 1fr 40px;
+    grid-template-columns: 1fr 40px 40px 40px;
     margin: 5px 0;
+
     border-bottom: 1px solid #7a7a7a3b;
     &:hover {
       background-color: #7a7a7a17;
     }
     div:not(:last-child) {
-      margin-bottom: 5px;
       border-right: 1px solid #7a7a7a3b;
-      margin-right: 20px;
     }
   }
-  &__remove-btn {
-    text-align: center;
+  &__table-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+  }
+  &__add-btn {
+    gap: 10px;
   }
 }
