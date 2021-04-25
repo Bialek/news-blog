@@ -21,6 +21,10 @@ module.exports = (sequelize, Sequelize) => {
     publishDate: {
       type: Sequelize.DATE,
     },
+    categoryId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
   });
 
   return News;

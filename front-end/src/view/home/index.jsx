@@ -1,6 +1,10 @@
-import React from "react";
+import { StoreContext } from "context";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
+  const { storeData } = useContext(StoreContext);
+
   return (
     <section className="hero is-info is-fullheight-with-navbar">
       <div className="hero-body">
@@ -14,24 +18,15 @@ export default function Home() {
         <nav className="tabs is-boxed is-fullwidth">
           <div className="container">
             <ul>
-              <li className="is-active">
-                <a href="/">Examples</a>
-              </li>
-              <li>
-                <a href="/">home</a>
-              </li>
-              <li>
-                <a href="/">page</a>
-              </li>
-              <li>
-                <a href="/">footer</a>
-              </li>
-              <li>
-                <a href="/">buttons</a>
-              </li>
-              <li>
-                <a href="/">Components</a>
-              </li>
+              {storeData &&
+                storeData.dictionaryData["news_category"] &&
+                storeData.dictionaryData["news_category"].map((category) => (
+                  <li>
+                    <Link to={`/news-list/${category.id}`}>
+                      {category.name}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
         </nav>

@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import UserService from "services/user";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "context";
+import { StoreContext } from "context";
 import { STORAGE_TOKEN_KEY } from "utils/constants";
 
 export default function LogIn() {
   const [message, setMessage] = useState(undefined);
   let history = useHistory();
-  const { setUserData } = useContext(UserContext);
+  const { setStoreData } = useContext(StoreContext);
 
   function onSubmitHandler(event) {
     event.preventDefault();
@@ -21,7 +21,7 @@ export default function LogIn() {
     UserService.logIn(payload)
       .then((response) => {
         localStorage.setItem(STORAGE_TOKEN_KEY, response.accessToken);
-        setUserData(response);
+        setStoreData((prevData) => ({ ...prevData, userData: response }));
         history.push("/");
       })
       .catch((error) => {

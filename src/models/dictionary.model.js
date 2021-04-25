@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Comment = sequelize.define("comment", {
+  const Dictionary = sequelize.define("dictionary", {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -8,7 +8,10 @@ module.exports = (sequelize, Sequelize) => {
     name: {
       type: Sequelize.STRING,
     },
+    type: {
+      type: Sequelize.STRING,
+    },
   });
 
-  return Comment;
+  return Dictionary;
 };

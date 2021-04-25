@@ -140,9 +140,14 @@ class NewsService {
     });
   }
 
-  getAllNewest() {
+  getAllNewest(categoryId) {
+    let url = `${BASE_URL}/api/news/getAllNewest`;
+    if (categoryId) {
+      url = url.concat(`/${categoryId}`);
+    }
+
     return new Promise((resolve, reject) => {
-      fetch(`${BASE_URL}/api/news/getAllNewest`)
+      fetch(url)
         .then(async (response) => {
           if (response.status !== 200) {
             reject(response);

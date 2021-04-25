@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
-import { convertToHTML } from "draft-convert";
-import DOMPurify from "dompurify";
+import draftToHtml from "draftjs-to-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./styles.scss";
+import { StoreContext } from "context";
 
 export default function NewsForm(props) {
+  const { storeData } = useContext(StoreContext);
+
   const history = useHistory();
   const [formData, setFormData] = useState(
     props.formData ?? {
       miniatureContent: "",
       miniatureColor: "",
-      miniatureIsVertical: false,
+      categoryId: storeData.dictionaryData["news_category"][0].id,
       miniatureSize: "",
       miniatureSubtitle: "",
       miniatureTitle: "",
@@ -22,26 +24,29 @@ export default function NewsForm(props) {
     }
   );
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+  const [editorState, setEditorState] = useState(
+    props.formData && props.formData.content
+      ? EditorState.createWithContent(
+          convertFromRaw(JSON.parse(props.formData.content))
+        )
+      : EditorState.createEmpty()
   );
-  const [convertedContent, setConvertedContent] = useState(null);
+  const [convertedContent, setConvertedContent] = useState(
+    props.formData && props.formData.content
+      ? JSON.parse(props.formData.content)
+      : null
+  );
+
   const handleEditorChange = (state) => {
     setEditorState(state);
-    convertContentToHTML();
-  };
-  const convertContentToHTML = () => {
-    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
-    setConvertedContent(currentContentAsHTML);
+    setConvertedContent(convertToRaw(state.getCurrentContent()));
   };
 
   function onChangeHandler(value, fieldName) {
     setFormData({ ...formData, [fieldName]: value });
   }
 
-  function onSubmitHandler(event) {
-    event.preventDefault();
-
+  async function onSubmitHandler() {
     const payload = Object.entries(formData).reduce(
       (newPayload, [key, value]) => {
         if (value !== "") {
@@ -51,10 +56,10 @@ export default function NewsForm(props) {
       },
       {}
     );
-
-    payload.content = JSON.stringify(
+    payload.content = await JSON.stringify(
       convertToRaw(editorState.getCurrentContent())
     );
+    payload.categoryId = parseInt(payload.categoryId);
 
     props
       .request(payload)
@@ -182,17 +187,23 @@ export default function NewsForm(props) {
           </div>
         </div>
 
-        <div className="control pl-6">
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              value={formData.miniatureIsVertical}
-              onChange={(e) =>
-                onChangeHandler(e.target.checked, "miniatureIsVertical")
-              }
-            />
-            Vertical minature?
-          </label>
+        <div className="pl-6">
+          <label className="label mr-2 mb-0">category</label>
+          <div className="control">
+            <div className="select">
+              <select
+                className="is-primary"
+                value={formData.categoryId}
+                onChange={(e) => onChangeHandler(e.target.value, "categoryId")}
+              >
+                {storeData.dictionaryData["news_category"].map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -221,13 +232,12 @@ export default function NewsForm(props) {
           toolbarClassName="toolbar-class"
         />
       </div>
-
       {convertedContent !== null && (
         <div className="field">
           <div
-            className="preview"
+            className="content"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(convertedContent),
+              __html: draftToHtml(convertedContent),
             }}
           />
         </div>
@@ -240,7 +250,12 @@ export default function NewsForm(props) {
           </button>
         </div>
         <div className="control">
-          <button className="button is-link is-light">Cancel</button>
+          <button
+            className="button is-link is-light"
+            onClick={() => history.push("/admin/news-list")}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </div>

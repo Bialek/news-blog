@@ -1,16 +1,16 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "logo.png";
-import { UserContext } from "context";
+import { StoreContext } from "context";
 import { ROLE_ADMIN, STORAGE_TOKEN_KEY } from "utils/constants";
 
 export default function Header() {
   const [isMenuActive, setIsMenuActive] = useState(false);
-  const { userData, setUserData } = useContext(UserContext);
+  const { storeData, setStoreData } = useContext(StoreContext);
 
   const signOutHandler = () => {
     localStorage.removeItem(STORAGE_TOKEN_KEY);
-    setUserData(undefined);
+    setStoreData((prevData) => ({ ...prevData, userData: undefined }));
   };
   return (
     <nav
@@ -51,29 +51,30 @@ export default function Header() {
             <NavLink
               className="navbar-item"
               activeClassName="is-active"
-              to="/news"
+              to="/news-list"
             >
-              Newest
+              News
             </NavLink>
 
-            {userData && userData.roles.includes(ROLE_ADMIN) && (
-              <NavLink
-                className="navbar-item"
-                activeClassName="is-active"
-                to="/admin/dashboard"
-              >
-                Admin
-              </NavLink>
-            )}
+            {storeData.userData &&
+              storeData.userData.roles.includes(ROLE_ADMIN) && (
+                <NavLink
+                  className="navbar-item"
+                  activeClassName="is-active"
+                  to="/admin/dashboard"
+                >
+                  Admin
+                </NavLink>
+              )}
           </div>
 
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                {userData ? (
+                {storeData.userData ? (
                   <>
                     <div className="media-content mr-3">
-                      <p className="title is-4 has-text-white">{`${userData.username}`}</p>
+                      <p className="title is-4 has-text-white">{`${storeData.userData.username}`}</p>
                     </div>
                     <div onClick={signOutHandler}>
                       <NavLink className="button is-primary" to="/">

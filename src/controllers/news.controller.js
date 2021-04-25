@@ -1,10 +1,11 @@
+const { miniature } = require("../models");
 const db = require("../models");
 const News = db.news;
 const Minature = db.miniature;
 
 exports.getAll = (req, res) => {
-  News.findAll().then((articles) => {
-    res.send(articles);
+  News.findAll().then((news) => {
+    res.send(news);
   });
 };
 
@@ -135,10 +136,12 @@ exports.publish = async (req, res) => {
 };
 
 exports.getAllNewest = (req, res) => {
-  Minature.findAll(
-    { where: { published: true } },
-    { order: [["publishDate", "DESC"]] }
-  )
+  const categoryId = req.params.categoryId;
+  const where = { published: true };
+  if (categoryId) {
+    where.categoryId = categoryId;
+  }
+  Minature.findAll({ where }, { order: [["publishDate", "DESC"]] })
     .then((data) => {
       res.send(data);
     })
@@ -147,4 +150,16 @@ exports.getAllNewest = (req, res) => {
         message: `"An error occurred while trying to get! ${error}`,
       });
     });
+};
+
+exports.getAllByCategory = (req, res) => {
+  const categoryId = req.params.categoryId;
+
+  Minature.findAll({
+    where: {
+      [Op.and]: [{ categoryId }, { published: true }],
+    },
+  }).then((news) => {
+    res.send(news);
+  });
 };

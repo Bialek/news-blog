@@ -21,14 +21,15 @@ module.exports = (sequelize, Sequelize) => {
     miniatureColor: {
       type: Sequelize.STRING,
     },
-    miniatureIsVertical: {
-      type: Sequelize.BOOLEAN,
-    },
     miniatureSize: {
       type: Sequelize.INTEGER(10),
     },
     miniatureContent: {
       type: Sequelize.TEXT(512),
+    },
+    categoryId: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
   });
 

@@ -79,7 +79,7 @@ export default function AdminNewsList() {
                     className="news-list__table-btn"
                     onClick={() => onClickPublishHandler(news.id)}
                   >
-                    <i class="far fa-newspaper"></i>
+                    <i className="far fa-newspaper"></i>
                   </div>
                 </div>
               ))}

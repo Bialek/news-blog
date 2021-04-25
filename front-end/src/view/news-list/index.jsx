@@ -3,14 +3,16 @@ import NewsService from "services/news/index";
 
 import Loader from "components/loader";
 import NewsMiniature from "components/news-miniature";
+import { useParams } from "react-router";
 
 export default function NewsList() {
+  const { categoryId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [collection, setCollection] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    NewsService.getAllNewest()
+    NewsService.getAllNewest(categoryId)
       .then((response) => {
         setCollection(response);
       })
@@ -18,7 +20,7 @@ export default function NewsList() {
         setError(`Error ${error.status} ${error.statusText}`);
       })
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [categoryId]);
 
   const renderedArticles = useMemo(() => {
     if (collection) {
@@ -30,13 +32,11 @@ export default function NewsList() {
         }
         return res;
       }, []);
-
       return groupedCollection.map((groupedNews) => {
         const gridTemplate = groupedNews.reduce(
-          (string, news) => string.concat(` ${news.miniatureSize}fr`),
+          (string, news) => string.concat(` ${news.miniatureSize ?? 3}fr`),
           ""
         );
-
         return (
           <div
             key={`group-${groupedNews[0].newsId}`}

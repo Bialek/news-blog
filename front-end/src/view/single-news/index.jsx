@@ -3,9 +3,7 @@ import { useParams } from "react-router-dom";
 import Loader from "components/loader";
 import NewsService from "services/news/index";
 import CommentsList from "components/comments-list";
-import DOMPurify from "dompurify";
-import { convertFromRaw } from "draft-js";
-import { convertToHTML } from "draft-convert";
+import draftToHtml from "draftjs-to-html";
 
 export default function SingleNews() {
   let { id } = useParams();
@@ -15,21 +13,22 @@ export default function SingleNews() {
   const [content, setContent] = useState();
 
   useEffect(() => {
-    NewsService.getById(id)
-      .then(async (response) => {
-        if (response.content) {
-          const parserContent = await convertToHTML(
-            convertFromRaw(JSON.parse(response.content))
-          );
-          setContent(parserContent);
-        }
-        setData(response);
-      })
-      .catch((error) => {
-        setError(`Error ${error.status} ${error.statusText}`);
-      })
-      .finally(() => setIsLoading(false));
-  }, [id]);
+    if (data === null) {
+      NewsService.getById(id)
+        .then((response) => {
+          setData(response);
+
+          if (response.content) {
+            const parserContent = draftToHtml(JSON.parse(response.content));
+            setContent(parserContent);
+          }
+        })
+        .catch((error) => {
+          setError(`Error ${error.status} ${error.statusText}`);
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [id, data]);
 
   return (
     <div className="container mt-3">
@@ -44,12 +43,15 @@ export default function SingleNews() {
               <p>Author: {data.authorName}</p>
             </div>
             <div className="columns is-multiline is-mobile">
-              <div
-                className="column"
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(content),
-                }}
-              ></div>
+              {content && (
+                <div
+                  className="column"
+                  dangerouslySetInnerHTML={{
+                    __html: content,
+                  }}
+                />
+              )}
+
               {data.img && (
                 <div className="column is-one-quarter">
                   <figure className="image is-128x128">

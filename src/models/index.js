@@ -22,7 +22,8 @@ db.user = require("./user.model")(sequelize, Sequelize);
 db.role = require("./role.model")(sequelize, Sequelize);
 db.news = require("./news.model")(sequelize, Sequelize);
 db.miniature = require("./miniature.model")(sequelize, Sequelize);
-// db.comment = require("./comment.model.js")(sequelize, Sequelize);
+db.comment = require("./comment.model.js")(sequelize, Sequelize);
+db.dictionary = require("./dictionary.model")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -35,9 +36,7 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId",
 });
 db.user.hasMany(db.news);
-db.news.belongsTo(db.user, {
-  foreignKey: "authorId",
-});
+db.news.belongsTo(db.user);
 db.user.hasMany(db.miniature);
 db.miniature.belongsTo(db.user, {
   foreignKey: "authorId",
@@ -48,6 +47,9 @@ db.news.hasOne(db.miniature, {
   onUpdate: "CASCADE",
 });
 db.miniature.belongsTo(db.news);
+
+db.comment.hasOne(db.comment, { as: "parentId" });
+db.comment.belongsTo(db.comment);
 
 db.ROLES = ["user", "admin"];
 
