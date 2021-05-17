@@ -6,6 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("client/build"));
 
 require("./src/routes/auth.routes")(app);
 require("./src/routes/news.routes")(app);
@@ -20,7 +21,7 @@ const Dictionary = db.dictionary;
 
 db.sequelize.sync().then(() => {
   console.log("Drop and Resync Db");
-  // initial();
+  initial();
 });
 
 function initial() {
