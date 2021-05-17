@@ -19,6 +19,7 @@ export default function Home() {
           <div className="container">
             <ul>
               {storeData &&
+                storeData.dictionaryData &&
                 storeData.dictionaryData["news_category"] &&
                 storeData.dictionaryData["news_category"].map((category) => (
                   <li>

@@ -40,5 +40,5 @@ module.exports = function (app) {
     [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
     controller.publish
   );
-  app.get("/api/news/getAllNewest/:categoryId", controller.getAllNewest);
+  app.get("/api/news/getAllNewest/:categoryId?", controller.getAllNewest);
 };

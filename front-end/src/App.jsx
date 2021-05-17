@@ -83,9 +83,6 @@ export default function App() {
             </>
           ) : (
             <>
-              <Route path="/sign-in">
-                <SignIn />
-              </Route>
               <Route path="/log-in">
                 <LogIn />
               </Route>
@@ -95,8 +92,4 @@ export default function App() {
       </BrowserRouter>
     </StoreContext.Provider>
   );
-}
-
-function SignIn() {
-  return <h2>Sign in page, building in progress</h2>;
 }

@@ -1,4 +1,3 @@
-const { miniature } = require("../models");
 const db = require("../models");
 const News = db.news;
 const Minature = db.miniature;
@@ -55,6 +54,7 @@ exports.create = async (req, res) => {
     const news = await News.create(req.body);
     const miniature = await Minature.create(req.body);
     news.setMiniature(miniature);
+    news.setUser(req.userId);
     res.status(200).send({
       message: "News has been creted!",
     });

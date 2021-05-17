@@ -1,7 +1,9 @@
+import { BASE_URL } from "utils/constants";
+
 class CommentService {
-  getAll(articleId) {
+  getAll(newsId) {
     return new Promise((resolve, reject) => {
-      fetch(`http://localhost:8088/news/commentsList/${articleId}`)
+      fetch(`${BASE_URL}/api/comment/getAllForNews/${newsId}`)
         .then(async (response) => {
           if (response.status !== 200) {
             reject(response);
@@ -17,7 +19,7 @@ class CommentService {
 
   create(payload) {
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:8088/comments/add", {
+      fetch(`${BASE_URL}/api/comment/create/${payload.newsId}`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

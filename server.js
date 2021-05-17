@@ -8,9 +8,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 require("./src/routes/auth.routes")(app);
-require("./src/routes/user.routes")(app);
 require("./src/routes/news.routes")(app);
 require("./src/routes/dictionary.routes")(app);
+require("./src/routes/comment.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 
@@ -20,40 +20,40 @@ const Dictionary = db.dictionary;
 
 db.sequelize.sync().then(() => {
   console.log("Drop and Resync Db");
-  initial();
+  // initial();
 });
 
-// function initial() {
-//   Role.create({
-//     name: "admin",
-//   });
-//   Role.create({
-//     name: "user",
-//   });
-//   Role.create({
-//     name: "moderator",
-//   });
-//   Dictionary.create({
-//     name: "Category Lorem",
-//     type: "news_category",
-//   });
-//   Dictionary.create({
-//     name: "Category Ipsum ",
-//     type: "news_category",
-//   });
-//   Dictionary.create({
-//     name: "Category dolor ",
-//     type: "news_category",
-//   });
-//   Dictionary.create({
-//     name: "Category sit ",
-//     type: "news_category",
-//   });
-//   Dictionary.create({
-//     name: "Category amet",
-//     type: "news_category",
-//   });
-// }
+function initial() {
+  Role.create({
+    name: "admin",
+  });
+  Role.create({
+    name: "user",
+  });
+  Role.create({
+    name: "moderator",
+  });
+  Dictionary.create({
+    name: "Category Lorem",
+    type: "news_category",
+  });
+  Dictionary.create({
+    name: "Category Ipsum ",
+    type: "news_category",
+  });
+  Dictionary.create({
+    name: "Category dolor ",
+    type: "news_category",
+  });
+  Dictionary.create({
+    name: "Category sit ",
+    type: "news_category",
+  });
+  Dictionary.create({
+    name: "Category amet",
+    type: "news_category",
+  });
+}
 
 app.listen(PORT, () =>
   console.log(`NewsAPI server is working on port ${PORT}!`)

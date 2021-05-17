@@ -103,8 +103,12 @@ class NewsService {
 
   delete(id) {
     return new Promise((resolve, reject) => {
-      fetch(`${BASE_URL}/api/news/remove/${id}`, {
+      fetch(`${BASE_URL}/api/news/delete/${id}`, {
         method: "delete",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": localStorage.getItem(STORAGE_TOKEN_KEY),
+        },
       })
         .then(async (response) => {
           if (response.status !== 200) {

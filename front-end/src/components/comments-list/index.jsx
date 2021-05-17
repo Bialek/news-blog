@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import Loader from "components/loader";
 import CommentService from "services/comment/index";
 
-export default function CommentsList({ articleId }) {
+export default function CommentsList({ newsId }) {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (data === null) {
-      CommentService.getAll(articleId)
+      CommentService.getAll(newsId)
         .then((response) => {
           setData(response);
         })
@@ -18,7 +18,7 @@ export default function CommentsList({ articleId }) {
         })
         .finally(() => setIsLoading(false));
     }
-  }, [articleId, data]);
+  }, [newsId, data]);
 
   const newCommentInput = useRef();
 
@@ -26,8 +26,7 @@ export default function CommentsList({ articleId }) {
     if (newCommentInput.current.value !== "") {
       CommentService.create({
         content: newCommentInput.current.value,
-        author: "Logged user",
-        newsId: parseInt(articleId),
+        newsId: parseInt(newsId),
       })
         .then(() => {
           setIsLoading(true);

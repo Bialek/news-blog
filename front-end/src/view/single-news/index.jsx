@@ -62,7 +62,7 @@ export default function SingleNews() {
             </div>
           </section>
 
-          <CommentsList articleId={id} />
+          <CommentsList newsId={id} />
         </>
       )}
     </div>

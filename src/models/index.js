@@ -48,8 +48,8 @@ db.news.hasOne(db.miniature, {
 });
 db.miniature.belongsTo(db.news);
 
-db.comment.hasOne(db.comment, { as: "parentId" });
-db.comment.belongsTo(db.comment);
+db.news.hasMany(db.comment, { as: "comments" });
+db.comment.belongsTo(db.news);
 
 db.ROLES = ["user", "admin"];
 
