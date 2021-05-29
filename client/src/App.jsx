@@ -14,6 +14,7 @@ import AdminAddNews from "view/admin-add-news";
 import NewsList from "view/news-list";
 import SingleNews from "view/single-news";
 import DictionaryService from "services/dictionary/index";
+import AdminDictionariesList from "view/admin-dictionary-list";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -78,6 +79,11 @@ export default function App() {
               <Route path={"/admin/edit-news/:id"}>
                 <AdminMenuWrapper>
                   <AdminEditNews />
+                </AdminMenuWrapper>
+              </Route>
+              <Route path={"/admin/dictionary-list"}>
+                <AdminMenuWrapper>
+                  <AdminDictionariesList />
                 </AdminMenuWrapper>
               </Route>
             </>

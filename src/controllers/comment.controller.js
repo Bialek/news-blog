@@ -15,7 +15,6 @@ exports.getAllForNews = (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  console.log(req);
   const id = req.params.newsId;
 
   try {

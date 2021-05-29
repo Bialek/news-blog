@@ -26,6 +26,15 @@ export default function AdminMenuWrapper(props) {
                 News
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                activeClassName="is-active"
+                to="/admin/dictionary-list"
+                exact={true}
+              >
+                Dictionary
+              </NavLink>
+            </li>
           </ul>
         </aside>
       </div>

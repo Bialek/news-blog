@@ -1,0 +1,30 @@
+.dictionary-list {
+  display: grid;
+  grid-auto-flow: row;
+  padding: 1rem;
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 40px 40px;
+    margin: 5px 0;
+
+    border-bottom: 1px solid #7a7a7a3b;
+    &:hover {
+      background-color: #7a7a7a17;
+    }
+    div:not(:last-child) {
+      border-right: 1px solid #7a7a7a3b;
+    }
+  }
+  &__row-text {
+    margin-left: 5px;
+  }
+  &__table-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  &__add-btn {
+    gap: 10px;
+  }
+}

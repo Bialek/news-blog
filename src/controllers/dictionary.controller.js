@@ -3,6 +3,7 @@ const Dictionary = db.dictionary;
 
 exports.getAll = (req, res) => {
   Dictionary.findAll().then((dictionary) => {
+    dictionary.sort((a, b) => a.id - b.id);
     res.send(dictionary);
   });
 };
@@ -22,12 +23,16 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const id = req.body.newsId;
-  Dictionary.update({
-    where: { id },
-  })
+  const id = req.body.id;
+  Dictionary.update(
+    req.body,
+    {
+      where: { id },
+    },
+    { multi: true }
+  )
     .then((num) => {
-      if (num === 1) {
+      if (num[0] === 1) {
         res.send({
           message: "Dictionary has been saved!",
         });
@@ -45,7 +50,7 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  const id = req.params.newsId;
+  const id = req.params.dictionaryId;
   Dictionary.destroy({
     where: { id },
   })
