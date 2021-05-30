@@ -23,3 +23,13 @@
     }
   }
 }
+
+.search {
+  display: flex;
+  justify-content: space-evenly;
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+}

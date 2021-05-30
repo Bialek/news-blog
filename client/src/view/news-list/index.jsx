@@ -1,18 +1,29 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useContext } from "react";
 import NewsService from "services/news/index";
 
 import Loader from "components/loader";
 import NewsMiniature from "components/news-miniature";
-import { useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
+import { StoreContext } from "context";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function NewsList() {
   const { categoryId } = useParams();
+  const location = useLocation();
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [collection, setCollection] = useState(null);
   const [error, setError] = useState(null);
+  const { storeData } = useContext(StoreContext);
+
+  const query = new URLSearchParams(location.search).get("query");
 
   useEffect(() => {
-    NewsService.getAllNewest(categoryId)
+    setIsLoading(true);
+    NewsService.getAllNewest({
+      query,
+      categoryId,
+    })
       .then((response) => {
         setCollection(response);
       })
@@ -20,12 +31,12 @@ export default function NewsList() {
         setError(`Error ${error.status} ${error.statusText}`);
       })
       .finally(() => setIsLoading(false));
-  }, [categoryId]);
+  }, [query, categoryId]);
 
   const renderedArticles = useMemo(() => {
     if (collection) {
       const groupedCollection = collection.reduce((res, el, i) => {
-        if (i % 3 === 0) {
+        if (i % 4 === 0) {
           res[res.length] = [el];
         } else {
           res[res.length - 1] = [...res[res.length - 1], el];
@@ -59,11 +70,73 @@ export default function NewsList() {
     }
   }, [collection]);
 
+  const categoriesOptions = useMemo(
+    () => (
+      <>
+        <option disabled selected value>
+          Select category
+        </option>
+        {storeData &&
+          storeData.dictionaryData &&
+          storeData.dictionaryData["news_category"] &&
+          storeData.dictionaryData["news_category"].map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+      </>
+    ),
+    [storeData]
+  );
+
+  const onChangeQueryHandler = useDebouncedCallback((query) => {
+    let url = location.pathname;
+    if (query !== "") {
+      url = `${url}?query=${query}`;
+    }
+    history.push(url);
+  }, 200);
+
   return (
     <div className="container mt-3">
+      <div className="search">
+        <div className="field">
+          <label className="label">Search</label>
+          <div className="control">
+            <input
+              className="input"
+              type="text"
+              placeholder="Text input"
+              defaultValue={query}
+              onChange={(event) => {
+                onChangeQueryHandler(event.target.value);
+              }}
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Category</label>
+          <div class="control">
+            <div class="select">
+              <select
+                value={categoryId}
+                onChange={(event) => {
+                  let url = `/news-list/${event.target.value}`;
+                  if (query && query !== "") {
+                    url = `${url}?query=${query}`;
+                  }
+                  history.push(url);
+                }}
+              >
+                {categoriesOptions}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
       {isLoading && <Loader />}
       {error && <div>{error}</div>}
-      {collection && renderedArticles}
+      {collection && <div>{renderedArticles}</div>}
     </div>
   );
 }

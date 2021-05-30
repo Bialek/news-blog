@@ -62,7 +62,12 @@ export default function AdminNewsList() {
             <div className="news-list">
               {collection.map((news) => (
                 <div className="news-list__row" key={news.id}>
-                  <div>{news.title}</div>
+                  <div className="news-list__row--text">{news.title}</div>
+                  <div className="news-list__row--text">{news.subtitle}</div>
+                  <div className="news-list__row--text">
+                    {news.published === true ? "Published" : "Not published"}
+                  </div>
+
                   <div
                     className="news-list__table-btn"
                     onClick={() => history.push(`/admin/edit-news/${news.id}`)}
@@ -75,12 +80,14 @@ export default function AdminNewsList() {
                   >
                     <i className="fas fa-trash"></i>
                   </div>
-                  <div
-                    className="news-list__table-btn"
-                    onClick={() => onClickPublishHandler(news.id)}
-                  >
-                    <i className="far fa-newspaper"></i>
-                  </div>
+                  {news.published === false && (
+                    <div
+                      className="news-list__table-btn"
+                      onClick={() => onClickPublishHandler(news.id)}
+                    >
+                      <i className="far fa-newspaper"></i>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

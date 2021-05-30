@@ -144,10 +144,13 @@ class NewsService {
     });
   }
 
-  getAllNewest(categoryId) {
+  getAllNewest(payload) {
     let url = `${BASE_URL}/api/news/getAllNewest`;
-    if (categoryId) {
-      url = url.concat(`/${categoryId}`);
+    if (payload.categoryId) {
+      url = url.concat(`/${payload.categoryId}`);
+    }
+    if (payload.query) {
+      url = url.concat(`?query=${payload.query}`);
     }
 
     return new Promise((resolve, reject) => {

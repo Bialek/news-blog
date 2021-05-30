@@ -1,6 +1,7 @@
 const db = require("../models");
 const News = db.news;
 const Minature = db.miniature;
+const Op = db.Sequelize.Op;
 
 exports.getAll = (req, res) => {
   News.findAll().then((news) => {
@@ -137,10 +138,18 @@ exports.publish = async (req, res) => {
 
 exports.getAllNewest = (req, res) => {
   const categoryId = req.params.categoryId;
+  const query = new URLSearchParams(req.query).get("query");
+
   const where = { published: true };
   if (categoryId) {
     where.categoryId = categoryId;
   }
+  if (query) {
+    where.miniatureTitle = {
+      [Op.like]: `%${query}%`,
+    };
+  }
+
   Minature.findAll({ where }, { order: [["publishDate", "DESC"]] })
     .then((data) => {
       res.send(data);
