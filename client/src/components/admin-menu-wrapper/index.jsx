@@ -18,11 +18,7 @@ export default function AdminMenuWrapper(props) {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                activeClassName="is-active"
-                to="/admin/news-list"
-                exact={true}
-              >
+              <NavLink activeClassName="is-active" to="/admin/news-list">
                 News
               </NavLink>
             </li>

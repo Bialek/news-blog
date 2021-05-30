@@ -16,7 +16,7 @@ module.exports = function (app) {
     controller.getByIdForEdit
   );
   app.get(
-    "/api/news/getAll",
+    "/api/news/getAll/:categoryId?",
     [authJwt.verifyToken, authJwt.isModeratorOrAdmin],
     controller.getAll
   );

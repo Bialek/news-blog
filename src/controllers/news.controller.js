@@ -4,9 +4,28 @@ const Minature = db.miniature;
 const Op = db.Sequelize.Op;
 
 exports.getAll = (req, res) => {
-  News.findAll().then((news) => {
-    res.send(news);
-  });
+  const categoryId = req.params.categoryId;
+  const query = new URLSearchParams(req.query).get("query");
+
+  const where = { published: true };
+  if (categoryId) {
+    where.categoryId = categoryId;
+  }
+  if (query) {
+    where.title = {
+      [Op.like]: `%${query}%`,
+    };
+  }
+
+  News.findAll({ where }, { order: [["publishDate", "DESC"]] })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((error) => {
+      res.send({
+        message: `"An error occurred while trying to get! ${error}`,
+      });
+    });
 };
 
 exports.getById = async (req, res) => {
@@ -159,16 +178,4 @@ exports.getAllNewest = (req, res) => {
         message: `"An error occurred while trying to get! ${error}`,
       });
     });
-};
-
-exports.getAllByCategory = (req, res) => {
-  const categoryId = req.params.categoryId;
-
-  Minature.findAll({
-    where: {
-      [Op.and]: [{ categoryId }, { published: true }],
-    },
-  }).then((news) => {
-    res.send(news);
-  });
 };

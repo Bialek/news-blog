@@ -1,9 +1,17 @@
 import { BASE_URL, STORAGE_TOKEN_KEY } from "utils/constants";
 
 class NewsService {
-  getAll() {
+  getAll(payload) {
     return new Promise((resolve, reject) => {
-      fetch(`${BASE_URL}/api/news/getAll`, {
+      let url = `${BASE_URL}/api/news/getAll`;
+      if (payload.categoryId) {
+        url = url.concat(`/${payload.categoryId}`);
+      }
+      if (payload.query) {
+        url = url.concat(`?query=${payload.query}`);
+      }
+
+      fetch(url, {
         headers: { "x-access-token": localStorage.getItem(STORAGE_TOKEN_KEY) },
       })
         .then(async (response) => {

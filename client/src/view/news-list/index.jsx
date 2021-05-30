@@ -73,9 +73,7 @@ export default function NewsList() {
   const categoriesOptions = useMemo(
     () => (
       <>
-        <option disabled selected value>
-          Select category
-        </option>
+        <option value="">Select category</option>
         {storeData &&
           storeData.dictionaryData &&
           storeData.dictionaryData["news_category"] &&
@@ -121,7 +119,7 @@ export default function NewsList() {
               <select
                 value={categoryId}
                 onChange={(event) => {
-                  let url = `/news-list/${event.target.value}`;
+                  let url = `/admin/news-list/${event.target.value}`;
                   if (query && query !== "") {
                     url = `${url}?query=${query}`;
                   }

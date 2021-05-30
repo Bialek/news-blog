@@ -66,7 +66,7 @@ export default function App() {
                   <AdminDashboard />
                 </AdminMenuWrapper>
               </Route>
-              <Route path={"/admin/news-list"}>
+              <Route path={"/admin/news-list/:categoryId?"}>
                 <AdminMenuWrapper>
                   <AdminNewsList />
                 </AdminMenuWrapper>
