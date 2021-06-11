@@ -119,7 +119,7 @@ export default function NewsList() {
               <select
                 value={categoryId}
                 onChange={(event) => {
-                  let url = `/admin/news-list/${event.target.value}`;
+                  let url = `/news-list/${event.target.value}`;
                   if (query && query !== "") {
                     url = `${url}?query=${query}`;
                   }
