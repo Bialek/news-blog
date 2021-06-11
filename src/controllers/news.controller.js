@@ -7,7 +7,7 @@ exports.getAll = (req, res) => {
   const categoryId = req.params.categoryId;
   const query = new URLSearchParams(req.query).get("query");
 
-  const where = { published: true };
+  const where = {};
   if (categoryId) {
     where.categoryId = categoryId;
   }
